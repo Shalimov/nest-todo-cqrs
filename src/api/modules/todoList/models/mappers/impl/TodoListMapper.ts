@@ -1,9 +1,9 @@
 import { TodoList } from '@/domain/aggregates/todoList/TodoList';
 import { TodoStatus } from '@/domain/aggregates/todoList/TodoStatus';
 
-import { TodoListViewModel } from '../viewModels/TodoListViewModel';
-import { TodoViewModel } from '../viewModels/TodoViewModel';
-import { IMapper } from './IMapper';
+import { TodoListViewModel } from '../../viewModels/TodoListViewModel';
+import { TodoViewModel } from '../../viewModels/TodoViewModel';
+import { IMapper } from '../IMapper';
 
 export class TodoListMapper implements IMapper<TodoList, TodoListViewModel> {
   map(model: TodoList): TodoListViewModel {

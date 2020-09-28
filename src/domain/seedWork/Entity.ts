@@ -1,4 +1,4 @@
-export class Entity<T > {
+export class Entity<T> {
     #id: T;
 
     constructor(id: T) {

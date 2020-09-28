@@ -23,6 +23,7 @@
   "dependencies": {
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
+    "@nestjs/cqrs": "^7.0.1",
     "@nestjs/platform-express": "^7.0.0",
     "leveldown": "^5.6.0",
     "levelup": "^4.4.0",

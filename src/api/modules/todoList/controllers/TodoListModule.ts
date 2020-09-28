@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 
-import { IMapperTodoList } from '@/api/models/mappers/ITodoListMapper';
+import { IMapperTodoList } from '@/api/modules/todoList/models/mappers/ITodoListMapper';
 import { ITodoListRepository } from '@/infrastructure/repositories/ITodoListRepository';
-import { TodoListRepository } from '@/infrastructure/repositories/TodoListRepository';
+import { TodoListRepository } from '@/infrastructure/repositories/impl/TodoListRepository';
 
-import { TodoListMapper } from '../models/mappers/TodoListMapper';
+import { TodoListMapper } from '../models/mappers/impl/TodoListMapper';
+import { TodoListController } from './TodoListController';
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [TodoListController],
   providers: [
     {
       provide: IMapperTodoList,

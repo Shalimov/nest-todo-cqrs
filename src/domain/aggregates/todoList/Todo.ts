@@ -9,7 +9,7 @@ export class Todo extends Entity<string> {
     #status: TodoStatus;
 
     constructor(title: string, description: string, status: TodoStatus) {
-        super(null);
+        super(`${title}-${description}`);
 
         if (title === null || title.length === 0) {
             throw new TodoArgumentNullError("Title can not be null or empty");

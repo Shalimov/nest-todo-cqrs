@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 
 import // CreateTodoCommand,
 // SetStatusTodoCommand,
@@ -12,12 +12,10 @@ import {
 import { TodoList } from '@/domain/aggregates/todoList/TodoList';
 
 import { IMapperTodoList } from '../models/mappers/ITodoListMapper';
-import { TodoListViewModel } from '../models/viewModels/TodoListViewModel';
 
 @Controller('v1/todos')
-export class TodoController {
+export class TodoListController {
   constructor(
-    private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
     @Inject(IMapperTodoList) private readonly mapper: IMapperTodoList,
   ) {}

@@ -1,18 +1,33 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "esModuleInterop": true,
     "sourceMap": true,
+    "sourceRoot": "./src",
     "outDir": "./dist",
-    "baseUrl": ".",
+    "target": "ES2017",
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "rootDir": "src",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     },
-    "incremental": true
-  }
+    "types": [
+      "node",
+      "jest"
+    ],
+    "lib": [
+      "ES2020"
+    ]
+  },
+  "include": ["src/"],
+  "exclude": [
+    "node_modules"
+  ]
 }
