@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CqrsModule } from '@nestjs/cqrs';
 
-import { TodoListModule } from './modules/todoList/controllers/TodoListModule';
+import { TodoListModule } from './modules/todoList/TodoListModule';
 
 @Module({
-  imports: [CqrsModule, TodoListModule],
+  imports: [TodoListModule],
 })
 export class AppModule {}

@@ -48,7 +48,7 @@ export class TodoListController {
     const todoList = await this.queryBus.execute<
       InProgressTodosQuery,
       TodoList
-    >(new CompletedTodosQuery());
+    >(new InProgressTodosQuery());
 
     return this.mapper.map(todoList);
   }

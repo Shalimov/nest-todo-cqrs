@@ -10,7 +10,7 @@ import { AllTodosQuery } from '../AllTodosQuery';
 export class AllTodosQueryHandler
   implements IQueryHandler<AllTodosQuery, TodoList> {
   constructor(
-    @Inject('ITodoListRepository')
+    @Inject(ITodoListRepository)
     private readonly todoListRepository: ITodoListRepository,
   ) {}
 

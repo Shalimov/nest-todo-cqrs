@@ -1,14 +1,21 @@
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
 import { IMapperTodoList } from '@/api/modules/todoList/models/mappers/ITodoListMapper';
 import { ITodoListRepository } from '@/infrastructure/repositories/ITodoListRepository';
 import { TodoListRepository } from '@/infrastructure/repositories/impl/TodoListRepository';
 
-import { TodoListMapper } from '../models/mappers/impl/TodoListMapper';
-import { TodoListController } from './TodoListController';
+import {
+  AllTodosQueryHandler,
+  CompletedTodosQueryHandler,
+  InProgressTodosQueryHandler,
+} from '@/application/queries/handlers';
+
+import { TodoListMapper } from './models/mappers/impl/TodoListMapper';
+import { TodoListController } from './controllers/TodoListController';
 
 @Module({
-  imports: [],
+  imports: [CqrsModule],
   controllers: [TodoListController],
   providers: [
     {
@@ -19,6 +26,9 @@ import { TodoListController } from './TodoListController';
       provide: ITodoListRepository,
       useClass: TodoListRepository,
     },
+    AllTodosQueryHandler,
+    CompletedTodosQueryHandler,
+    InProgressTodosQueryHandler,
   ],
 })
 export class TodoListModule {}
