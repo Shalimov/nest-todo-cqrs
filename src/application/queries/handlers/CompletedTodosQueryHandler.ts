@@ -4,7 +4,7 @@ import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { ITodoListRepository } from '@/infrastructure/repositories/ITodoListRepository';
 import { TodoList } from '@/domain/aggregates/todoList/TodoList';
 
-import { CompletedTodosQuery } from '../CompletedTodosQuery';
+import { CompletedTodosQuery } from '../defs';
 
 @QueryHandler(CompletedTodosQuery)
 export class CompletedTodosQueryHandler

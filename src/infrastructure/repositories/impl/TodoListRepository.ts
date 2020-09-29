@@ -4,12 +4,20 @@ import { TodoStatus } from '@/domain/aggregates/todoList/TodoStatus';
 
 import { ITodoListRepository } from '../ITodoListRepository';
 
+const tempTodos: Todo[] = [
+  new Todo('Hello World', 'Describe your first app', TodoStatus.COMPLETE),
+  new Todo('Prismaphone', 'Describe your second app', TodoStatus.INPROGRESS),
+  new Todo('Lucio', 'Describe your third app', TodoStatus.INPROGRESS),
+];
+
 export class TodoListRepository implements ITodoListRepository {
-  insert(): Promise<void> {
-    throw new Error('Method not implemented.');
+  async insert(todoList: TodoList): Promise<TodoList> {
+    tempTodos.push(...todoList.todos);
+
+    return Promise.resolve(todoList);
   }
 
-  update(): Promise<void> {
+  async update(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
@@ -20,12 +28,8 @@ export class TodoListRepository implements ITodoListRepository {
   findAll(): Promise<TodoList> {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(new TodoList([
-          new Todo("Hello World", "Describe your first app", TodoStatus.COMPLETE),
-          new Todo("Prismaphone", "Describe your second app", TodoStatus.INPROGRESS),
-          new Todo("Lucio", "Describe your third app", TodoStatus.INPROGRESS),
-        ]));
-      }, 5000);
+        resolve(new TodoList(tempTodos));
+      }, 1000);
     });
   }
 }

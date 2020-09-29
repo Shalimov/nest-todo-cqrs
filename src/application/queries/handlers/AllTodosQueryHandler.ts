@@ -4,7 +4,7 @@ import { Inject } from '@nestjs/common';
 import { TodoList } from '@/domain/aggregates/todoList/TodoList';
 import { ITodoListRepository } from '@/infrastructure/repositories/ITodoListRepository';
 
-import { AllTodosQuery } from '../AllTodosQuery';
+import { AllTodosQuery } from '../defs';
 
 @QueryHandler(AllTodosQuery)
 export class AllTodosQueryHandler

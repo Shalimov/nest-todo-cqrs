@@ -10,6 +10,8 @@ import {
   CompletedTodosQueryHandler,
   InProgressTodosQueryHandler,
 } from '@/application/queries/handlers';
+import { CreateTodoCommandHandler } from '@/application/commands/handlers';
+import { TodoCreatedEventHandler } from '@/application/events/handlers';
 
 import { TodoListMapper } from './models/mappers/impl/TodoListMapper';
 import { TodoListController } from './controllers/TodoListController';
@@ -26,9 +28,14 @@ import { TodoListController } from './controllers/TodoListController';
       provide: ITodoListRepository,
       useClass: TodoListRepository,
     },
+    // Events
+    TodoCreatedEventHandler,
+    // Queries
     AllTodosQueryHandler,
     CompletedTodosQueryHandler,
     InProgressTodosQueryHandler,
+    // Commands
+    CreateTodoCommandHandler,
   ],
 })
 export class TodoListModule {}
