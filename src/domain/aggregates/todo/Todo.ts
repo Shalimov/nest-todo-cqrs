@@ -1,9 +1,10 @@
 import { Entity } from "@/domain/seedWork/Entity";
+import { IAggregateRoot } from "@/domain/seedWork/IAggregateRoot";
 import { TodoArgumentNullError } from "@/domain/exceptions/TodoArgumentNullError";
 
 import { TodoStatus } from "./TodoStatus";
 
-export class Todo extends Entity<string> {
+export class Todo extends Entity<string> implements IAggregateRoot {
     #title: string;
     #descripion: string;
     #status: TodoStatus;
@@ -18,6 +19,10 @@ export class Todo extends Entity<string> {
         this.#title = title;
         this.#descripion = description;
         this.#status = status;
+    }
+
+    getRootType() {
+        return 'Todo';
     }
 
     public get title() {

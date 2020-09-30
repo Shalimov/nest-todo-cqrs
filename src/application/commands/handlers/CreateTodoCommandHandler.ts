@@ -1,10 +1,8 @@
 import { CommandHandler, ICommandHandler, EventBus } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
-
-import { TodoList } from '@/domain/aggregates/todoList/TodoList';
-import { Todo } from '@/domain/aggregates/todoList/Todo';
-import { TodoStatus } from '@/domain/aggregates/todoList/TodoStatus';
-import { ITodoListRepository } from '@/infrastructure/repositories/ITodoListRepository';
+import { Todo } from '@/domain/aggregates/todo/Todo';
+import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
+import { ITodoRepository } from '@/infrastructure/repositories/types/ITodoRepository';
 
 import { CreateTodoCommand } from '../defs';
 import { TodoCreatedEvent } from '@/application/events/defs';
@@ -13,8 +11,8 @@ import { TodoCreatedEvent } from '@/application/events/defs';
 export class CreateTodoCommandHandler
   implements ICommandHandler<CreateTodoCommand, boolean> {
   constructor(
-    @Inject(ITodoListRepository)
-    private readonly todoListRepository: ITodoListRepository,
+    @Inject(ITodoRepository)
+    private readonly TodoRepository: ITodoRepository,
     private readonly eventBus: EventBus,
   ) {}
 
@@ -25,7 +23,7 @@ export class CreateTodoCommandHandler
       TodoStatus.INPROGRESS,
     );
 
-    await this.todoListRepository.insert(new TodoList([newTodo]));
+    await this.TodoRepository.insert(newTodo);
 
     this.eventBus.publish(new TodoCreatedEvent(newTodo.id));
     return true;

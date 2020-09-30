@@ -1,6 +1,6 @@
 import { ICommand } from '@nestjs/cqrs';
 
-import { TodoStatus } from '@/domain/aggregates/todoList/TodoStatus';
+import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
 
 export class SetStatusTodoCommand implements ICommand {
   constructor(

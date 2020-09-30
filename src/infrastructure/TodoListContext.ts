@@ -1,3 +1,3 @@
-export class TodoListContext {
+export class TodoContext {
     
 }

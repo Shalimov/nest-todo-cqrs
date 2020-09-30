@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { TodoListModule } from './modules/todoList/TodoListModule';
+import { TodoModule } from './modules/todo/TodoModule';
 
 @Module({
-  imports: [TodoListModule],
+  imports: [TodoModule],
 })
 export class AppModule {}
