@@ -2,7 +2,8 @@ import { Todo } from '@/domain/aggregates/todo/Todo';
 import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
 
 import { TodoViewModel } from '../../viewModels/TodoViewModel';
-import { IMapper } from '../IMapper';
+
+import { IMapper } from '../types';
 
 export class TodoMapper implements IMapper<Todo, TodoViewModel> {
   mapArray(models: Todo[]): TodoViewModel[] {

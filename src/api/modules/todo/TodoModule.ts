@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { IMapperTodo } from '@/api/modules/todo/models/mappers/ITodoMapper';
 import { ITodoRepository } from '@/infrastructure/repositories/types/ITodoRepository';
 import { TodoRepository } from '@/infrastructure/repositories/impl/TodoRepository';
 
@@ -12,7 +11,8 @@ import {
 import { CreateTodoCommandHandler } from '@/application/commands/handlers';
 import { TodoCreatedEventHandler } from '@/application/events/handlers';
 
-import { TodoMapper } from './models/mappers/impl/TodoMapper';
+import { IMapperTodo } from './models/mappers/types';
+import { TodoMapper } from './models/mappers/impl';
 import { TodoController } from './controllers/TodoController';
 
 @Module({

@@ -17,7 +17,7 @@ import {
 } from '@/application/queries/defs';
 import { Todo } from '@/domain/aggregates/todo/Todo';
 
-import { IMapperTodo } from '../models/mappers/ITodoMapper';
+import { IMapperTodo } from '../models/mappers/types';
 
 @Controller('v1/todos')
 export class TodoController {
