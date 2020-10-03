@@ -1,10 +1,37 @@
-import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { CommandHandler, ICommandHandler, EventBus } from '@nestjs/cqrs';
+import { Inject } from '@nestjs/common';
 
-import { SetStatusTodoCommand } from "../defs";
+import { TodoUpdatedEvent } from '@/application/events/defs';
+import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
+import { ITodoRepository } from '@/infrastructure/repositories/types/ITodoRepository';
+
+import { SetStatusTodoCommand } from '../defs';
 
 @CommandHandler(SetStatusTodoCommand)
-export class SetStatusTodoCommandHandler implements ICommandHandler<SetStatusTodoCommand, boolean> {
-    execute(command: SetStatusTodoCommand): Promise<boolean> {
-        throw new Error("Method not implemented.");
+export class SetStatusTodoCommandHandler
+  implements ICommandHandler<SetStatusTodoCommand, boolean> {
+  constructor(
+    @Inject(ITodoRepository)
+    private readonly todoRepository: ITodoRepository,
+    private readonly eventBus: EventBus,
+  ) {}
+
+  async execute(command: SetStatusTodoCommand): Promise<boolean> {
+    const todo = await this.todoRepository.get(command.todoId);
+
+    if (!todo) {
+      throw new Error(`Todo with id: ${command.todoId} is not found.`);
     }
+
+    todo.status =
+      command.status == 'completed'
+        ? TodoStatus.COMPLETE
+        : TodoStatus.INPROGRESS;
+
+    await this.todoRepository.update(command.todoId, todo);
+
+    this.eventBus.publish(new TodoUpdatedEvent(command.todoId));
+
+    return true;
+  }
 }

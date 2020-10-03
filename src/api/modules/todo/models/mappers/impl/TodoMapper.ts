@@ -24,6 +24,6 @@ export class TodoMapper implements IMapper<Todo, TodoViewModel> {
         throw new Error('[Mapping] Status argument is wrong and unsupported');
     }
 
-    return new TodoViewModel(model.title, model.description, status);
+    return new TodoViewModel(model.id, model.title, model.description, status);
   }
 }

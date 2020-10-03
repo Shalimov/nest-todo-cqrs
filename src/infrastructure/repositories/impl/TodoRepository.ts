@@ -4,21 +4,54 @@ import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
 import { ITodoRepository } from '../types/';
 import { TodoFilterSpec } from '../specifications/';
 
-const tempTodos: Todo[] = [
-  new Todo('Hello World', 'Describe your first app', TodoStatus.COMPLETE),
-  new Todo('Prismaphone', 'Describe your second app', TodoStatus.INPROGRESS),
-  new Todo('Lucio', 'Describe your third app', TodoStatus.INPROGRESS),
-];
-
 export class TodoRepository implements ITodoRepository {
-  async insert(todo: Todo): Promise<Todo> {
-    tempTodos.push(todo);
+  #ids = 1;
+  #tempTodos: Todo[];
 
-    return Promise.resolve(todo);
+  constructor() {
+    this.#tempTodos =[
+      Todo.restore(
+        this.#ids,
+        'Hello World',
+        'Describe your first app',
+        TodoStatus.COMPLETE,
+      ),
+      Todo.restore(
+        ++this.#ids,
+        'Prismaphone',
+        'Describe your second app',
+        TodoStatus.INPROGRESS,
+      ),
+      Todo.restore(
+        ++this.#ids,
+        'Lucio',
+        'Describe your third app',
+        TodoStatus.INPROGRESS,
+      ),
+    ];
   }
 
-  async update(): Promise<void> {
-    throw new Error('Method not implemented.');
+  async insert(todo: Todo): Promise<Todo> {
+    const newTodo = Todo.restore(
+      ++this.#ids,
+      todo.title,
+      todo.description,
+      todo.status,
+    );
+
+    this.#tempTodos.push(newTodo);
+
+    return Promise.resolve(newTodo);
+  }
+
+  async update(id: number, todo: Todo): Promise<void> {
+    const index = this.#tempTodos.findIndex(todo => todo.id === id);
+
+    this.#tempTodos.splice(index, 1, todo);
+  }
+
+  get(id: number): Promise<Todo | null> { 
+    return Promise.resolve(this.#tempTodos.find(todo => todo.id === id) ?? null);
   }
 
   findOne(): Promise<Todo> {
@@ -30,11 +63,11 @@ export class TodoRepository implements ITodoRepository {
       setTimeout(() => {
         if (specification) {
           return resolve(
-            tempTodos.filter(todo => todo.status === specification.status),
+            this.#tempTodos.filter(todo => todo.status === specification.status),
           );
         }
 
-        return resolve(tempTodos);
+        return resolve(this.#tempTodos);
       }, 1000);
     });
   }
