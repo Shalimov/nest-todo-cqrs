@@ -6,11 +6,15 @@ import {
   HttpStatus,
   Inject,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
-import { CreateTodoCommand } from '@/application/commands/defs';
+import {
+  CreateTodoCommand,
+  SetStatusTodoCommand,
+} from '@/application/commands/defs';
 import {
   AllTodosQuery,
   FilterByStatusTodosQuery,
@@ -35,6 +39,17 @@ export class TodoController {
     );
   }
 
+  @Patch('/:todoId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async updateTodo(
+    @Param('todoId') todoId: string,
+    @Body() todo: Omit<SetStatusTodoCommand, 'todoId'>,
+  ) {
+    await this.commandBus.execute(
+      new SetStatusTodoCommand(Number(todoId), todo.status),
+    );
+  }
+
   @Get()
   async queryAllTodos() {
     const todos = await this.queryBus.execute<AllTodosQuery, Todo[]>(
@@ -45,7 +60,9 @@ export class TodoController {
   }
 
   @Get('/:status')
-  async queryTodosByStatus(@Param('status') status: 'completed' | 'inprogress') {
+  async queryTodosByStatus(
+    @Param('status') status: 'completed' | 'inprogress',
+  ) {
     const todos = await this.queryBus.execute<FilterByStatusTodosQuery, Todo[]>(
       new FilterByStatusTodosQuery(status),
     );
