@@ -28,9 +28,12 @@ export class SetStatusTodoCommandHandler
         ? TodoStatus.COMPLETE
         : TodoStatus.INPROGRESS;
 
-    await this.todoRepository.update(command.todoId, todo);
+    await this.todoRepository.update(todo);
 
     this.eventBus.publish(new TodoUpdatedEvent(command.todoId));
+
+    // It's temporary here
+    await this.todoRepository.unitOfWork.complete();
 
     return true;
   }

@@ -29,6 +29,9 @@ export class CreateTodoCommandHandler
       this.eventBus.publish(new TodoCreatedEvent(insertedTodo.id));
     }
 
+    // It's temporary here
+    await this.todoRepository.unitOfWork.complete();
+
     return true;
   }
 }

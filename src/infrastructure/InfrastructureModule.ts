@@ -2,12 +2,16 @@ import { Module } from '@nestjs/common';
 
 import { ITodoRepository } from './repositories/types';
 import { TodoRepository } from './repositories/impl';
+import { TodoContext } from './contexts/TodoContext';
 
 @Module({
-  providers: [{
-    provide: ITodoRepository,
-    useClass: TodoRepository,
-  }],
+  providers: [
+    TodoContext,
+    {
+      provide: ITodoRepository,
+      useClass: TodoRepository,
+    },
+  ],
   exports: [ITodoRepository],
 })
 export class InfrastructureModule {}
