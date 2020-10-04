@@ -1,2 +1,3 @@
 export * from './AllTodosQueryHandler';
-export * from './FilterByStatusTodosQuery';
+export * from './FilterByStatusTodosQueryHandler';
+export * from './AllPoktaMessagesQueryHandler';

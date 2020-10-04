@@ -1,5 +1,5 @@
 import { IEvent } from '@nestjs/cqrs';
 
-export class TodoCreatedEvent implements IEvent {
+export class TodoCreationSuccessEvent implements IEvent {
   constructor(public readonly todoId: number) {}
 }

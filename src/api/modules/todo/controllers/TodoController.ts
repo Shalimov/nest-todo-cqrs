@@ -18,6 +18,7 @@ import {
 import {
   AllTodosQuery,
   FilterByStatusTodosQuery,
+  AllPoktaMessagesQuery,
 } from '@/application/queries/defs';
 import { Todo } from '@/domain/aggregates/todo/Todo';
 
@@ -30,6 +31,16 @@ export class TodoController {
     private readonly queryBus: QueryBus,
     @Inject(IMapperTodo) private readonly mapper: IMapperTodo,
   ) {}
+
+  @Get('/debug/pokta')
+  async queryPoktaMessages() {
+    const poktaMessages = await this.queryBus.execute<
+      AllPoktaMessagesQuery,
+      { id: number; msg: string }[]
+    >(new AllPoktaMessagesQuery());
+
+    return poktaMessages;
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

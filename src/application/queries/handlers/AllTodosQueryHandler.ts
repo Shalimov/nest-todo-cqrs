@@ -11,11 +11,11 @@ export class AllTodosQueryHandler
   implements IQueryHandler<AllTodosQuery, Todo[]> {
   constructor(
     @Inject(ITodoRepository)
-    private readonly TodoRepository: ITodoRepository,
+    private readonly todoRepository: ITodoRepository,
   ) {}
 
-  async execute(query: AllTodosQuery): Promise<Todo[]> {
-    const todos = await this.TodoRepository.findAll();
+  async execute(_query: AllTodosQuery): Promise<Todo[]> {
+    const todos = await this.todoRepository.findAll();
     return todos;
   }
 }

@@ -1,3 +1,3 @@
 export interface ISpecification {
-    createPredicate(): any;
+    getSpecType(): string;
 }

@@ -1,9 +1,8 @@
 import { CommandHandler, ICommandHandler, EventBus } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 
-import { TodoUpdatedEvent } from '@/application/events/defs';
 import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
-import { ITodoRepository } from '@/infrastructure/repositories/types/ITodoRepository';
+import { ITodoRepository } from '@/infrastructure/repositories/types';
 
 import { SetStatusTodoCommand } from '../defs';
 
@@ -29,8 +28,6 @@ export class SetStatusTodoCommandHandler
         : TodoStatus.INPROGRESS;
 
     await this.todoRepository.update(todo);
-
-    this.eventBus.publish(new TodoUpdatedEvent(command.todoId));
 
     // It's temporary here
     await this.todoRepository.unitOfWork.complete();

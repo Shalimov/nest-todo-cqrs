@@ -8,4 +8,5 @@ export interface IRepository<TAggRoot, TSpec, ID = TAggRoot extends { id: infer 
   get(id: ID): Promise<TAggRoot | null>;
   findOne(spec: TSpec): Promise<TAggRoot | null>;
   findAll(spec?: TSpec): Promise<TAggRoot[]>
+  delete(spec?: TSpec): Promise<void>;
 }

@@ -6,28 +6,41 @@ import { InfrastructureModule } from '@/infrastructure/InfrastructureModule';
 import {
   CreateTodoCommandHandler,
   SetStatusTodoCommandHandler,
+  DeleteTodoCommandHandler,
+  CreatePoktaMessageCommandHandler,
 } from './commands/handlers';
 import {
   AllTodosQueryHandler,
   FilterByStatusTodosQueryHandler,
+  AllPoktaMessagesQueryHandler,
 } from './queries/handlers';
 import {
-  TodoCreatedEventHandler,
-  TodoUpdatedEventHandler,
+  TodoCreationSuccessEventHandler,
+  TodoDeletionSuccessEventHandler,
+  PoktaMsgCreationFailedEventHandler,
+  PoktaMsgCreationSuccessEventHandler,
 } from './events/handlers';
+import { TodoSaga } from './sagas/TodoSaga';
 
 @Module({
   imports: [CqrsModule, InfrastructureModule],
   providers: [
+    // Sagas
+    TodoSaga,
     // Events
-    TodoCreatedEventHandler,
-    TodoUpdatedEventHandler,
+    TodoCreationSuccessEventHandler,
+    TodoDeletionSuccessEventHandler,
+    PoktaMsgCreationFailedEventHandler,
+    PoktaMsgCreationSuccessEventHandler,
     // Queries
     AllTodosQueryHandler,
     FilterByStatusTodosQueryHandler,
+    AllPoktaMessagesQueryHandler,
     // Commands
     CreateTodoCommandHandler,
     SetStatusTodoCommandHandler,
+    DeleteTodoCommandHandler,
+    CreatePoktaMessageCommandHandler,
   ],
 })
 export class ApplicationModule {}

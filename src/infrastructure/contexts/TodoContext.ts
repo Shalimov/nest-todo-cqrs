@@ -4,12 +4,14 @@ import { Todo, TodoStatus } from '@/domain/aggregates/todo';
 import { IUnitOfWork } from '@/domain/seedWork/IUnitOfWork';
 
 // Preparation for adding unit of work
+// This context will be replace with real db driver
 @Injectable()
 export class TodoContext implements IUnitOfWork {
   #ids = 1;
   #todos: Todo[];
-  #bufferAddTodo: Todo[];
-  #bufferUpdateTodo: Todo[];
+  #bufferAddTodo: Todo[] = [];
+  #bufferUpdateTodo: Todo[] = [];
+  #bufferDeleteTodo: number[] = [];
 
   constructor() {
     this.#todos = [
@@ -63,6 +65,11 @@ export class TodoContext implements IUnitOfWork {
     return this.#todos;
   }
 
+  async deleteById(id: number) {
+    this.#bufferDeleteTodo.push(id);
+  }
+
+  // Dirty Implementaiton
   async commit() {
     this.#todos.push(...this.#bufferAddTodo);
 
@@ -71,12 +78,18 @@ export class TodoContext implements IUnitOfWork {
       const index = this.#todos.findIndex((todo) => todo.id === todoChanges.id);
       this.#todos.splice(index, 1, todoChanges);
     }
+
+    for (const todoId of this.#bufferDeleteTodo) {
+      const index = this.#todos.findIndex((todo) => todo.id === todoId);
+      this.#todos.splice(index, 1);
+    }
+
+    this.clearBuffers();
   }
 
   async rollback() {
     this.#ids -= this.#bufferAddTodo.length;
-    this.#bufferAddTodo = [];
-    this.#bufferUpdateTodo = [];
+    this.clearBuffers();
   }
 
   async complete() {
@@ -85,5 +98,12 @@ export class TodoContext implements IUnitOfWork {
     } catch (error) {
       await this.rollback();
     }
+  }
+
+
+  private clearBuffers() {
+    this.#bufferAddTodo = [];
+    this.#bufferUpdateTodo = [];
+    this.#bufferDeleteTodo = [];
   }
 }

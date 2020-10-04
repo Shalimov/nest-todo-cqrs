@@ -1,12 +1,13 @@
 import { CommandHandler, ICommandHandler, EventBus } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 
-import { TodoCreatedEvent } from '@/application/events/defs';
+import { TodoCreationSuccessEvent } from '@/application/events/defs';
 import { Todo } from '@/domain/aggregates/todo/Todo';
 import { TodoStatus } from '@/domain/aggregates/todo/TodoStatus';
 import { ITodoRepository } from '@/infrastructure/repositories/types/ITodoRepository';
 
 import { CreateTodoCommand } from '../defs';
+
 @CommandHandler(CreateTodoCommand)
 export class CreateTodoCommandHandler
   implements ICommandHandler<CreateTodoCommand, boolean> {
@@ -16,21 +17,21 @@ export class CreateTodoCommandHandler
     private readonly eventBus: EventBus,
   ) {}
 
-  async execute(query: CreateTodoCommand): Promise<boolean> {
+  async execute(command: CreateTodoCommand): Promise<boolean> {
     const newTodo = new Todo(
-      query.title,
-      query.description,
+      command.title,
+      command.description,
       TodoStatus.INPROGRESS,
     );
 
     const insertedTodo = await this.todoRepository.insert(newTodo);
 
-    if (insertedTodo.id) {
-      this.eventBus.publish(new TodoCreatedEvent(insertedTodo.id));
-    }
-
     // It's temporary here
     await this.todoRepository.unitOfWork.complete();
+
+    if (insertedTodo.id) {
+      this.eventBus.publish(new TodoCreationSuccessEvent(insertedTodo.id));
+    }
 
     return true;
   }
